@@ -22,4 +22,7 @@
               </ion-card-content>
           </ion-card>
       </ion-list>
+      <ion-fab right bottom *ngIf="selectedCal">
+        <button ion-fab color="danger" (click)="createEvent()"><ion-icon name="add"></ion-icon></button>
+      </ion-fab>
 </ion-content>
