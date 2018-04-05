@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>
       CalEvent
     </ion-title>
@@ -8,10 +8,18 @@
 
 <ion-content padding>
       <ion-label>Choose calendar</ion-label>
-      <ion-select  cancelText="Cancel" okText="Ok" class="select-full">
-        <ion-option value="bacon" selected="true">Bacon</ion-option>
+      <ion-select  canceltext="Cancel" oktext="Ok" class="select-full" [(ngModel)]="selectedCal">
+        <ion-option value="" selected="true">-- Select --</ion-option>
+        <ion-option *ngFor="let cal of calenderList" [value]= "cal">{{ cal }}</ion-option>
       </ion-select>
-      <ion-list>
-        
+      <ion-list *ngIf="selectedCal">
+          <ion-card class="zero-margin-left-right width-100-per">
+              <ion-card-header color="primary">
+                Header
+              </ion-card-header>
+              <ion-card-content>
+                The British use the term "header", but the American term "head-shot" the English simply refuse to adopt.
+              </ion-card-content>
+          </ion-card>
       </ion-list>
 </ion-content>
