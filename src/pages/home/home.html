@@ -8,19 +8,24 @@
 
 <ion-content padding>
       <ion-label>Choose calendar</ion-label>
-      <ion-select  canceltext="Cancel" oktext="Ok" class="select-full" [(ngModel)]="selectedCal">
+      <ion-select  canceltext="Cancel" oktext="Ok" class="select-full" [(ngModel)]="selectedCal" (ngModelChange)="listEvent($event)">
         <ion-option value="" selected="true">-- Select --</ion-option>
-        <ion-option *ngFor="let cal of calenderList" [value]= "cal">{{ cal }}</ion-option>
+        <ion-option *ngFor="let cal of calenderList" [value]= "cal.name">{{ cal.name }}</ion-option>
       </ion-select>
       <ion-list *ngIf="selectedCal">
-          <ion-card class="zero-margin-left-right width-100-per">
-              <ion-card-header color="primary">
-                Header
-              </ion-card-header>
-              <ion-card-content>
-                The British use the term "header", but the American term "head-shot" the English simply refuse to adopt.
-              </ion-card-content>
-          </ion-card>
+        <ion-card *ngFor="let ev of events">
+          <ion-card-header>
+            {{ ev.title }}
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item>
+              <ion-icon name="calendar"></ion-icon> Sart : {{ parseDate(ev.dtstart) }}
+            </ion-item>
+            <ion-item>
+              <ion-icon name="calendar"></ion-icon> End : {{  parseDate(ev.dtend) }}
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
       </ion-list>
       <ion-fab right bottom *ngIf="selectedCal">
         <button ion-fab color="danger" (click)="createEvent()"><ion-icon name="add"></ion-icon></button>
