@@ -1,33 +1,35 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>
-      CalEvent
+        <ion-icon name="calendar" class="header-icon"></ion-icon> CalEvent
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-      <ion-label>Choose calendar</ion-label>
-      <ion-select  canceltext="Cancel" oktext="Ok" class="select-full" [(ngModel)]="selectedCal" (ngModelChange)="listEvent($event)">
-        <ion-option value="" selected="true">-- Select --</ion-option>
-        <ion-option *ngFor="let cal of calenderList" [value]= "cal.name">{{ cal.name }}</ion-option>
-      </ion-select>
-      <ion-list *ngIf="selectedCal">
-        <ion-card *ngFor="let ev of events">
-          <ion-card-header>
+    <ion-label>Choose calendar</ion-label>
+    <ion-select  canceltext="Cancel" oktext="Ok" class="select-full" [(ngModel)]="selectedCal" (ngModelChange)="listEvent($event)">
+      <ion-option value="" selected="true">-- Select --</ion-option>
+      <ion-option *ngFor="let cal of calenderList" [value]= "cal.name">{{ cal.name }}</ion-option>
+    </ion-select>
+    <ion-list *ngIf="selectedCal">
+      <ion-card *ngFor="let ev of events" class="zero-margin-left-right width-100-per">
+        <ion-card-content>
+          <ion-item>
             {{ ev.title }}
-          </ion-card-header>
-          <ion-card-content>
-            <ion-item>
-              <ion-icon name="calendar"></ion-icon> Sart : {{ parseDate(ev.dtstart) }}
-            </ion-item>
-            <ion-item>
-              <ion-icon name="calendar"></ion-icon> End : {{  parseDate(ev.dtend) }}
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
-      </ion-list>
-      <ion-fab right bottom *ngIf="selectedCal">
-        <button ion-fab color="danger" (click)="createEvent()"><ion-icon name="add"></ion-icon></button>
-      </ion-fab>
+            <ion-icon ios="ios-trash-outline" md="md-trash" class="float-right header-icon" color="danger" (click)="deleteEvent($event)"></ion-icon>
+            <ion-icon ios="ios-create" md="md-create" class="float-right header-icon" color="primary" (click)="modifyEvent($event)"></ion-icon>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="calendar"></ion-icon> Sart : {{ parseDate(ev.dtstart) }}
+          </ion-item>
+          <ion-item>
+            <ion-icon name="calendar"></ion-icon> End : {{  parseDate(ev.dtend) }}
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+    <ion-fab right bottom *ngIf="selectedCal">
+      <button ion-fab color="danger" (click)="createEvent()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
 </ion-content>

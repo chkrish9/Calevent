@@ -23,7 +23,7 @@ export class HomePage {
       this.cal = this.calenderList.filter((obj)=> { 
         return obj.name==this.selectedCal; 
       })[0];
-      this.presentToast(JSON.stringify(this.calender.getCalendarOptions()));
+      
       if(this.platform.is('ios')){
         this.calender.findAllEventsInNamedCalendar(this.selectedCal).then( data =>{
           this.events = data;
@@ -40,10 +40,39 @@ export class HomePage {
 
   createEvent(){
     let date = new Date();
-    let options = { calendarId :this.cal["id"], calendarName: this.cal["name"], firstReminderMinutes:15 };
+    let options = {};
+
+    options["firstReminderMinutes"] = 15; // default is 60, pass in null for no reminder
+    options["secondReminderMinutes"] = 120;
+    options["url"] = "https://chkrish9.github.io/Portfolio/";
+    options["calendar.calendarName"] = this.cal["name"]; // iOS only, created for you if not found
+    options["calendarId"] = this.cal["id"]; // Android only, use id obtained from listCalendars()
+
+    // recurrence options
+    //options["recurrence"] = "monthly"; // supported are: daily, weekly, monthly, yearly
+    //options["recurrenceEndDate"] = new Date(2016,10,1); // leave empty to recur forever
+    //options["recurrenceInterval"] = 2; // once every 2 months in this case, default: 1
+
+    // create the event
+    //cal.createEventWithOptions(title, loc, notes, start, end, options, success, error);
+
     this.calender.createEventWithOptions('New Event','','adding new event',date,date,options).then( ()=>{
       this.presentToast(JSON.stringify("New Event added successfuly"));
     });
+  }
+
+  filterEvents(){
+    this.presentToast(JSON.stringify("Filter event"));
+    //this.calender.findEventWithOptions(title, location, notes, startDate, endDate, options)
+  }
+
+  modifyEvent(){
+    this.presentToast(JSON.stringify("Modify event"));
+  }
+
+  deleteEvent(){
+    this.presentToast(JSON.stringify("Delete event"));
+    //this.calender.deleteEvent(title, location, notes, startDate, endDate)
   }
 
   parseDate(date){
