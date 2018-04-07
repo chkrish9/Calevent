@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Platform, ToastController } from 'ionic-angular';
+import { NavController, Platform, ToastController, ModalController, Modal } from 'ionic-angular';
 import { Calendar } from '@ionic-native/calendar';
 
 @Component({
@@ -11,7 +11,7 @@ export class HomePage {
   cal={};
   calenderList = [];
   events=[];
-  constructor(public navCtrl: NavController, private calender:Calendar, private platform:Platform,private toastCtrl:ToastController) {
+  constructor(public navCtrl: NavController, private calender:Calendar, private platform:Platform,private toastCtrl:ToastController,private modalCtrl:ModalController) {
     this.platform.ready().then(()=>{
       this.calender.listCalendars().then( data => {
           this.calenderList = data;
@@ -31,7 +31,7 @@ export class HomePage {
       }else if (this.platform.is('android')){
         let start = new Date();
         let end = new Date();
-        end.setDate(end.getDate() + 31);
+        end.setDate(end.getDate() + 365);
         this.calender.listEventsInRange(start,end).then(data => {
           this.events = data.filter((obj)=> { 
             return obj.calendar_id==this.cal["id"]; 
@@ -41,27 +41,38 @@ export class HomePage {
   }
 
   createEvent(){
-    let date = new Date();
-    date.setDate(date.getDate() + 31)
-    let options = {};
+    var model:Modal =this.modalCtrl.create('CreateCalendarPage');
+    model.present();
 
-    options["firstReminderMinutes"] = 15; // default is 60, pass in null for no reminder
-    options["secondReminderMinutes"] = 120;
-    options["url"] = "https://chkrish9.github.io/Portfolio/";
-    options["calendar.calendarName"] = this.cal["name"]; // iOS only, created for you if not found
-    options["calendarId"] = this.cal["id"]; // Android only, use id obtained from listCalendars()
-
-    // recurrence options
-    //options["recurrence"] = "monthly"; // supported are: daily, weekly, monthly, yearly
-    //options["recurrenceEndDate"] = new Date(2016,10,1); // leave empty to recur forever
-    //options["recurrenceInterval"] = 2; // once every 2 months in this case, default: 1
-
-    // create the event
-    //cal.createEventWithOptions(title, loc, notes, start, end, options, success, error);
-
-    this.calender.createEventWithOptions('New Event','','adding new event',date,date,options).then( ()=>{
-      this.presentToast(JSON.stringify("New Event added successfuly"));
-      this.listEvent();
+    model.onDidDismiss((data)=>{
+      this.presentToast(JSON.stringify(data));
+      let date = new Date();
+      date.setDate(date.getDate() + 31)
+      let options = {};
+  
+      options["firstReminderMinutes"] = 15; // default is 60, pass in null for no reminder
+      options["secondReminderMinutes"] = 120;
+      options["url"] = "https://chkrish9.github.io/Portfolio/";
+      options["calendar.calendarName"] = this.cal["name"]; // iOS only, created for you if not found
+      options["calendarId"] = this.cal["id"]; // Android only, use id obtained from listCalendars()
+  
+      //recurrence options
+      // options["recurrence"] = "monthly"; // supported are: daily, weekly, monthly, yearly
+      // options["recurrenceEndDate"] = new Date(2016,10,1); // leave empty to recur forever
+      // options["recurrenceInterval"] = 2; // once every 2 months in this case, default: 1
+  
+      //create the event
+      //cal.createEventWithOptions(title, loc, notes, start, end, options, success, error);
+      if(data['title']!==''){
+        this.calender.createEventWithOptions(data['title'],data['location'],'adding new event',
+        new Date(data['startDate']+' '+data['timeStarts']),new Date(data['endDate']+' '+data['timeEnds']),options).then( ()=>{
+          this.presentToast(JSON.stringify("New Event added successfuly"));
+          this.listEvent();
+        });
+      }else{
+        this.presentToast(JSON.stringify("New Event fail to add"));
+      }
+      
     });
   }
 
