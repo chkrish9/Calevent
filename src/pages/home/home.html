@@ -17,8 +17,7 @@
         <ion-card-content>
           <ion-item>
             {{ ev.title }}
-            <ion-icon ios="ios-trash-outline" md="md-trash" class="float-right header-icon" color="danger" (click)="deleteEvent($event)"></ion-icon>
-            <ion-icon ios="ios-create" md="md-create" class="float-right header-icon" color="primary" (click)="modifyEvent($event)"></ion-icon>
+            <ion-icon ios="ios-trash-outline" md="md-trash" class="float-right header-icon" color="danger" (click)="deleteEvent(ev)"></ion-icon>
           </ion-item>
           <ion-item>
             <ion-icon name="calendar"></ion-icon> Sart : {{ parseDate(ev.dtstart) }}

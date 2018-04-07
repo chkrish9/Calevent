@@ -33,13 +33,16 @@ export class HomePage {
         let end = new Date();
         end.setDate(end.getDate() + 31);
         this.calender.listEventsInRange(start,end).then(data => {
-          this.events=data;
+          this.events = data.filter((obj)=> { 
+            return obj.calendar_id==this.cal["id"]; 
+          });;
         });
       }
   }
 
   createEvent(){
     let date = new Date();
+    date.setDate(date.getDate() + 31)
     let options = {};
 
     options["firstReminderMinutes"] = 15; // default is 60, pass in null for no reminder
@@ -58,21 +61,21 @@ export class HomePage {
 
     this.calender.createEventWithOptions('New Event','','adding new event',date,date,options).then( ()=>{
       this.presentToast(JSON.stringify("New Event added successfuly"));
+      this.listEvent();
     });
   }
 
   filterEvents(){
     this.presentToast(JSON.stringify("Filter event"));
     //this.calender.findEventWithOptions(title, location, notes, startDate, endDate, options)
+    this.listEvent();
   }
 
-  modifyEvent(){
-    this.presentToast(JSON.stringify("Modify event"));
-  }
-
-  deleteEvent(){
-    this.presentToast(JSON.stringify("Delete event"));
-    //this.calender.deleteEvent(title, location, notes, startDate, endDate)
+  deleteEvent(ev){
+    this.calender.deleteEvent(ev.title, ev.eventLocation, null, new Date(ev.dtstart), new Date(ev.dtend)).then( ()=>{
+      this.presentToast(JSON.stringify("Deleted successfuly"));
+      this.listEvent();
+    });;
   }
 
   parseDate(date){
