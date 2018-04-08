@@ -21,7 +21,7 @@ export class CreateCalendarPage {
     recurrenceEndDate:null,
     recurrenceInterval:1
   }
-
+  showError = false;
   constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController) {
   }
 
@@ -34,7 +34,13 @@ export class CreateCalendarPage {
       this.view.dismiss();
     }
     else{
-      this.view.dismiss(this.event);
+      if(this.event.title !='')
+      {
+        this.view.dismiss(this.event);
+      }
+      else{
+        this.showError = true;
+      }
     }
   }
 

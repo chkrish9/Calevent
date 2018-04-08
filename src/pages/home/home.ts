@@ -31,7 +31,8 @@ export class HomePage {
       }else if (this.platform.is('android')){
         let start = new Date();
         let end = new Date();
-        end.setDate(end.getDate() + 365);
+        start.setDate(start.getDate() - 1);
+        end.setDate(end.getDate() + 366);
         this.calender.listEventsInRange(start,end).then(data => {
           this.events = data.filter((obj)=> { 
             return obj.calendar_id==this.cal["id"]; 
