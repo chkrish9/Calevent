@@ -10,9 +10,9 @@ export class CreateCalendarPage {
    event = {
     title:'',
     location:'',
-    startDate: new Date().toDateString(),
+    startDate: new Date().toISOString(),
     timeStarts: '00:00',
-    endDate: new Date().toDateString(),
+    endDate: new Date().toISOString(),
     timeEnds:'01:00',
     firstReminderMinutes:60,
     secondReminderMinutes:150,
