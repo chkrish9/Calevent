@@ -13,7 +13,13 @@ export class CreateCalendarPage {
     startDate: new Date().toDateString(),
     timeStarts: '00:00',
     endDate: new Date().toDateString(),
-    timeEnds:'01:00'
+    timeEnds:'01:00',
+    firstReminderMinutes:60,
+    secondReminderMinutes:150,
+    url:'',
+    recurrence:'',
+    recurrenceEndDate:null,
+    recurrenceInterval:1
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController) {
