@@ -46,27 +46,28 @@ export class HomePage {
     model.present();
 
     model.onDidDismiss((data)=>{
-      this.presentToast(JSON.stringify(data));
+      //this.presentToast(JSON.stringify(data));
       let date = new Date();
       date.setDate(date.getDate() + 31)
       let options = {};
   
-      options["firstReminderMinutes"] = 15; // default is 60, pass in null for no reminder
-      options["secondReminderMinutes"] = 120;
-      options["url"] = "https://chkrish9.github.io/Portfolio/";
+      options["firstReminderMinutes"] = data.firstReminderMinutes; // default is 60, pass in null for no reminder
+      options["secondReminderMinutes"] = data.secondReminderMinutes;
+      options["url"] = data.url;
       options["calendar.calendarName"] = this.cal["name"]; // iOS only, created for you if not found
       options["calendarId"] = this.cal["id"]; // Android only, use id obtained from listCalendars()
   
       //recurrence options
-      // options["recurrence"] = "monthly"; // supported are: daily, weekly, monthly, yearly
-      // options["recurrenceEndDate"] = new Date(2016,10,1); // leave empty to recur forever
-      // options["recurrenceInterval"] = 2; // once every 2 months in this case, default: 1
-  
+      // options["recurrence"] = data.recurrence; // supported are: daily, weekly, monthly, yearly
+      // options["recurrenceEndDate"] = data.recurrenceEndDate; // leave empty to recur forever
+      // options["recurrenceInterval"] = data.recurrenceInterval; // once every 2 months in this case, default: 1
+      
       //create the event
       //cal.createEventWithOptions(title, loc, notes, start, end, options, success, error);
       if(data['title']!==''){
         this.calender.createEventWithOptions(data['title'],data['location'],'adding new event',
-        new Date(data['startDate']+' '+data['timeStarts']),new Date(data['endDate']+' '+data['timeEnds']),options).then( ()=>{
+        new Date(new Date(new Date(data['startDate']).toDateString() +' '+data['timeStarts'])),
+        new Date(new Date(new Date(data['endDate']).toDateString() +' '+data['timeEnds'])),options).then( ()=>{
           this.presentToast(JSON.stringify("New Event added successfuly"));
           this.listEvent();
         });

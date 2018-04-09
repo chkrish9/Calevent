@@ -10,18 +10,19 @@ export class CreateCalendarPage {
    event = {
     title:'',
     location:'',
-    startDate: new Date().toISOString(),
+    startDate: new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString(),
     timeStarts: '00:00',
-    endDate: new Date().toISOString(),
+    endDate: new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString(),
     timeEnds:'01:00',
     firstReminderMinutes:60,
     secondReminderMinutes:150,
     url:'',
     recurrence:'',
-    recurrenceEndDate:null,
+    recurrenceEndDate:new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString(),
     recurrenceInterval:1
   }
   showError = false;
+  recurrenceList = ["daily", "weekly", "monthly", "yearly"];
   constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController) {
   }
 

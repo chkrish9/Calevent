@@ -26,7 +26,6 @@
       <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.startDate"></ion-datetime>
     </ion-item>
 
-
     <ion-item>
       <ion-label>Start Time</ion-label>
       <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
@@ -36,13 +35,35 @@
       <ion-label>Ends</ion-label>
       <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.endDate"></ion-datetime>
     </ion-item>
-
+    
     <ion-item>
       <ion-label>End Time</ion-label>
       <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeEnds"></ion-datetime>
     </ion-item>
-
-    <button ion-button full (click)="closeModal('create')">Create</button>
-
   </ion-list>
+  <ion-list>
+    <ion-item>
+      <ion-input placeholder="First Reminder in minutes" type="number" [(ngModel)]="event.firstReminderMinutes"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Second Reminder in minutes" type="number" [(ngModel)]="event.secondReminderMinutes"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Url" [(ngModel)]="event.url"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-select  canceltext="Cancel" oktext="Ok" class="select-full" [(ngModel)]="event.recurrence">
+        <ion-option value="" selected="true">-- Select recurrence--</ion-option>
+        <ion-option *ngFor="let recurrence of recurrenceList" [value]= "recurrence">{{ recurrence }}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Recurrence Ends</ion-label>
+      <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.recurrenceEndDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Recurrence Interval" type="number" [(ngModel)]="event.recurrenceInterval"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button ion-button full (click)="closeModal('create')">Create</button>
 </ion-content>
