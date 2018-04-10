@@ -14,7 +14,7 @@
   </ion-select>
   <ion-list *ngIf="selectedCal" class="card-background-page">
     <ion-card *ngFor="let ev of events" class="zero-margin-left-right width-100-per">
-      <img src="assets/imgs/card1.png" />
+      <img src="assets/imgs/birthday.jpg" />
       <div class="card-title">{{ ev.title }}</div>
       <div class="card-subtitle">{{ parseDate(ev.dtstart) }}</div>
     </ion-card>
