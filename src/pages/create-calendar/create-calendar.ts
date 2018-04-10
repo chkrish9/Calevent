@@ -18,7 +18,7 @@ export class CreateCalendarPage {
     secondReminderMinutes:150,
     url:'',
     recurrence:'',
-    recurrenceEndDate:new Date(new Date().getTime() - new Date().getTimezoneOffset()*60000).toISOString(),
+    recurrenceEndDate:null,
     recurrenceInterval:1
   }
   showError = false;
