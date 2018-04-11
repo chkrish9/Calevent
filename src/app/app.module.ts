@@ -7,10 +7,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { Calendar } from '@ionic-native/calendar';
+
+import { PopoverComponent } from '../components/popover/popover';
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    PopoverComponent
   ],
   imports: [
     BrowserModule,
@@ -19,7 +22,8 @@ import { Calendar } from '@ionic-native/calendar';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    PopoverComponent
   ],
   providers: [
     StatusBar,

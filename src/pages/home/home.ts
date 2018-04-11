@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, Platform, ToastController, ModalController, Modal } from 'ionic-angular';
 import { Calendar } from '@ionic-native/calendar';
-
+import { PopoverController, NavParams } from 'ionic-angular';
+import { PopoverComponent } from '../../components/popover/popover';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -11,7 +12,8 @@ export class HomePage {
   cal = {};
   calenderList = [];
   events = [];
-  constructor(public navCtrl: NavController, private calender: Calendar, private platform: Platform, private toastCtrl: ToastController, private modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, private calender: Calendar, private platform: Platform,
+    private toastCtrl: ToastController, private modalCtrl: ModalController,private popoverCtrl: PopoverController) {
     this.platform.ready().then(() => {
       this.calender.listCalendars().then(data => {
         this.calenderList = data;
@@ -86,6 +88,15 @@ export class HomePage {
     this.presentToast(JSON.stringify("Filter event"));
     //this.calender.findEventWithOptions(title, location, notes, startDate, endDate, options)
     this.listEvent();
+  }
+
+  presentPopover(ev) {
+
+    let popover = this.popoverCtrl.create(PopoverComponent);
+
+    popover.present({
+      ev: ev
+    });
   }
 
   deleteEvent(ev) {
