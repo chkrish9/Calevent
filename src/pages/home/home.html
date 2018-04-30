@@ -21,7 +21,8 @@
     <ion-card *ngFor="let ev of events" class="zero-margin-left-right width-100-per">
       <img src="assets/imgs/birthday.jpg" />
       <div class="card-title">{{ ev.title }}</div>
-      <div class="card-subtitle">{{ parseDate(ev.dtstart) }}</div>
+      <!-- <div class="card-subtitle">{{ parseDate(ev.dtstart) }}</div> -->
+      <div class="card-subtitle">{{ev.eventtype }}</div>
     </ion-card>
     <!-- <ion-card *ngFor="let ev of events" class="zero-margin-left-right width-100-per">
       <ion-card-content>

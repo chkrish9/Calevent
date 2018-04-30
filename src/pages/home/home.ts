@@ -12,11 +12,21 @@ export class HomePage {
   cal = {};
   calenderList = [];
   events = [];
+  tagsList = [
+    {
+      tagName: "Birthday",
+      tags: ["b'dy", "birthday"]
+    },
+    {
+      tagName: "Marriage day",
+      tags: ["marriage"]
+    }
+  ];
   constructor(public navCtrl: NavController, private calender: Calendar, private platform: Platform,
     private toastCtrl: ToastController, private modalCtrl: ModalController, private popoverCtrl: PopoverController) {
     this.platform.ready().then(() => {
       this.calender.listCalendars().then(data => {
-        const dummy=[];
+        const dummy = [];
         data.forEach(element => {
           if (dummy.indexOf(element.name) < 0) {
             dummy.push(element.name);
@@ -43,10 +53,41 @@ export class HomePage {
       end.setDate(end.getDate() + 366);
       this.calender.listEventsInRange(start, end).then(data => {
         this.events = data.filter((obj) => {
+          this.addEventType(obj);
           return obj.calendar_id == this.cal["id"];
-        });;
+        });
+
       });
     }
+  }
+
+  addEventType(obj) {
+    var tagObj = {
+      tagName: "Birthday",
+      tags: ["b'dy", "birthday"]
+    }
+    var istrue=this.checkEventType(obj, tagObj);
+    if(!istrue){
+      tagObj = {
+        tagName: "Marriage day",
+        tags: ["marriage"]
+      }
+      istrue=this.checkEventType(obj, tagObj);
+    }
+  }
+
+  checkEventType(obj, tagObj) {
+    const tagName = tagObj.tagName;
+    var tags = tagObj.tags;
+    var istrue = false;
+    tags.forEach(tag => {
+      if (obj.title.toLowerCase().indexOf(tag.toLowerCase()) > -1) {
+        obj["eventtype"] = tagName;
+        istrue = true;
+        return true;
+      }
+    });
+    return istrue;
   }
 
   createEvent() {
