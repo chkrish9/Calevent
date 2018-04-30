@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, Platform, ToastController, ModalController, Modal } from 'ionic-angular';
 import { Calendar } from '@ionic-native/calendar';
-import { PopoverController, NavParams } from 'ionic-angular';
+import { PopoverController } from 'ionic-angular';
 import { PopoverComponent } from '../../components/popover/popover';
 @Component({
   selector: 'page-home',
@@ -13,10 +13,16 @@ export class HomePage {
   calenderList = [];
   events = [];
   constructor(public navCtrl: NavController, private calender: Calendar, private platform: Platform,
-    private toastCtrl: ToastController, private modalCtrl: ModalController,private popoverCtrl: PopoverController) {
+    private toastCtrl: ToastController, private modalCtrl: ModalController, private popoverCtrl: PopoverController) {
     this.platform.ready().then(() => {
       this.calender.listCalendars().then(data => {
-        this.calenderList = data;
+        const dummy=[];
+        data.forEach(element => {
+          if (dummy.indexOf(element.name) < 0) {
+            dummy.push(element.name);
+            this.calenderList.push(element);
+          }
+        });
       });
     });
   }
