@@ -19,7 +19,15 @@ export class HomePage {
     },
     {
       tagName: "Marriage day",
-      tags: ["marriage"]
+      tags: ["marriage", "anniversary"]
+    },
+    {
+      tagName: "Company",
+      tags: ["work", "developer", "join"]
+    },
+    {
+      tagName: "Special",
+      tags: ["talk", "saw"]
     }
   ];
   constructor(public navCtrl: NavController, private calender: Calendar, private platform: Platform,
@@ -62,18 +70,12 @@ export class HomePage {
   }
 
   addEventType(obj) {
-    var tagObj = {
-      tagName: "Birthday",
-      tags: ["b'dy", "birthday"]
-    }
-    var istrue=this.checkEventType(obj, tagObj);
-    if(!istrue){
-      tagObj = {
-        tagName: "Marriage day",
-        tags: ["marriage"]
+    this.tagsList.forEach(tagObj => {
+      var istrue=this.checkEventType(obj, tagObj);
+      if(istrue){
+        return;
       }
-      istrue=this.checkEventType(obj, tagObj);
-    }
+    });
   }
 
   checkEventType(obj, tagObj) {
