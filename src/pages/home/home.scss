@@ -34,10 +34,14 @@ page-home {
       width: 100%;
       font-weight: bold;
       color: #000;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; 
     }
   
     .card-subtitle {
       font-size: 1.0em;
+      font-weight: bold;
       position: absolute;
       top: 52%;
       width: 100%;

@@ -15,19 +15,23 @@ export class HomePage {
   tagsList = [
     {
       tagName: "Birthday",
-      tags: ["b'dy", "birthday"]
+      tags: ["b'dy", "birthday"],
+      image:"assets/imgs/birthday.jpg"
     },
     {
       tagName: "Marriage day",
-      tags: ["marriage", "anniversary"]
+      tags: ["marriage", "anniversary"],
+      image:"assets/imgs/marriagean.jpg"
     },
     {
       tagName: "Company",
-      tags: ["work", "developer", "join"]
+      tags: ["work", "developer", "join"],
+      image:"assets/imgs/company.jpg"
     },
     {
       tagName: "Special",
-      tags: ["talk", "saw"]
+      tags: ["talk", "saw"],
+      image:"assets/imgs/special.jpg"
     }
   ];
   constructor(public navCtrl: NavController, private calender: Calendar, private platform: Platform,
@@ -81,10 +85,12 @@ export class HomePage {
   checkEventType(obj, tagObj) {
     const tagName = tagObj.tagName;
     var tags = tagObj.tags;
+    var image = tagObj.image;
     var istrue = false;
     tags.forEach(tag => {
       if (obj.title.toLowerCase().indexOf(tag.toLowerCase()) > -1) {
         obj["eventtype"] = tagName;
+        obj["image"] = image;
         istrue = true;
         return true;
       }
