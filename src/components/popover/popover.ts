@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController } from 'ionic-angular';
+import { ViewController, ModalController,Modal } from 'ionic-angular';
 
 /**
  * Generated class for the PopoverComponent component.
@@ -13,9 +13,11 @@ import { ViewController } from 'ionic-angular';
 })
 export class PopoverComponent {
 
-  constructor(public viewCtrl: ViewController) {}
+  constructor(public viewCtrl: ViewController, private modalCtrl: ModalController) {}
 
   close() {
+    var model: Modal = this.modalCtrl.create('SearchTagPage');
+    model.present();
     this.viewCtrl.dismiss();
   }
 

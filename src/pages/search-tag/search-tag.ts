@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
 /**
  * Generated class for the SearchTagPage page.
@@ -15,11 +15,24 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SearchTagPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SearchTagPage');
   }
-
+  closeModal(from){
+    if(from === "close"){
+      this.view.dismiss();
+    }
+    // else{
+    //   if(this.event.title !='')
+    //   {
+    //     this.view.dismiss(this.event);
+    //   }
+    //   else{
+    //     this.showError = true;
+    //   }
+    // }
+  }
 }
