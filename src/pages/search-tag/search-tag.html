@@ -9,5 +9,33 @@
 
 </ion-header>
 <ion-content padding>
-  
+  <ion-list>
+    <ion-item>
+      <ion-select  canceltext="Cancel" oktext="Ok" class="select-full" [(ngModel)]="setTag.tagName">
+        <ion-option value="" selected="true">-- Select Tag Title Name--</ion-option>
+        <ion-option *ngFor="let tagName of tagNameList" [value]= "tagName">{{ tagName }}</ion-option>
+      </ion-select>
+    </ion-item>
+    <button ion-button full (click)="addTagTitle()">Add Tag Title</button>
+    <button ion-button full (click)="deleteTagTitle()" color="danger">Delete Tag Title</button>
+    <ion-item class="add-input">
+      <ion-input type="text" placeholder="Enter tag" [(ngModel)]="tagvalue"></ion-input>
+      <ion-buttons item-end (click)="addTag()">
+        <button ion-button><ion-icon item-end name="add" class="add-btn"></ion-icon></button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+  <ion-list no-lines>
+    <ion-item ion-item  detail-none *ngFor="let tag of setTag.tags">
+      {{ tag }}
+      <ion-buttons item-end (click)="deleteItem(tag)">
+        <button ion-button class="close-btn" color="danger"> <ion-icon item-end name="close" class="add-btn"></ion-icon></button>
+      </ion-buttons>
+    </ion-item> 
+  </ion-list>
+  <ion-fab right bottom>
+    <button ion-fab color="secondary" (click)="save()">
+      <ion-icon name="done-all"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>
