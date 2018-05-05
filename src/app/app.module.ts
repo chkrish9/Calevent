@@ -13,6 +13,7 @@ import { HomePage } from '../pages/home/home';
 import { Calendar } from '@ionic-native/calendar';
 
 import { PopoverComponent } from '../components/popover/popover';
+import { DatabaseProvider } from '../providers/database/database';
 @NgModule({
   declarations: [
     MyApp,
@@ -37,7 +38,8 @@ import { PopoverComponent } from '../components/popover/popover';
     Calendar,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     SQLitePorter,
-    SQLite
+    SQLite,
+    DatabaseProvider
   ]
 })
 export class AppModule {}

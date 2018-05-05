@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, AlertController, ToastController } from 'ionic-angular';
+import { DatabaseProvider } from '../../providers/database/database';
 
 /**
  * Generated class for the SearchTagPage page.
@@ -15,26 +16,55 @@ import { IonicPage, NavController, NavParams, ViewController, AlertController } 
 })
 export class SearchTagPage {
   tagvalue:string;
-  setTag = {
-    tagName:'',
-    tags:["abc","def"]
-  };
-  tagNameList = ["Birthday", "Marriage day", "Company", "Special"];
-  constructor(public navCtrl: NavController, public navParams: NavParams, private view: ViewController, private alertCtrl: AlertController) {
+  tagtitleid:number;
+  // setTag = {
+  //   tagName:'',
+  //   tags:[]
+  // };
+  //tagNameList = ["Birthday", "Marriage day", "Company", "Special"];
+  tagNameList = [];
+  tags = [];
+  selectedTags = [];
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+     private view: ViewController, private alertCtrl: AlertController,
+     private databasePro:DatabaseProvider,private toastCtrl: ToastController) {
+    this.databasePro.getDatabaseSate().subscribe( ready => {
+      if(ready){
+          this.loadTagTitles();
+          this.loadTags();
+      }
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SearchTagPage');
   }
 
+  loadTagTitles(){
+    this.databasePro.getAllTagTitles().then(data => {
+      this.tagNameList = data;
+    });
+  }
+
+  loadTags(){
+    this.databasePro.getAllTags().then(data => {
+      this.tags = data;
+    });
+  }
+
+  getTagsByTagTitle(){
+    this.selectedTags = this.tags.filter((tag)=>{
+      return tag.tagtitleid === this.tagtitleid;
+    });
+  }
   addTag(){
     if(this.tagvalue!=="" && this.tagvalue!=null){
       var value=this.tagvalue;
-      var isExist=this.setTag.tags.filter(function(item) { 
+      var isExist=this.tags.filter(function(item) { 
         return item.toLowerCase() === value.toLowerCase()
       });
       if(isExist.length < 1){
-        this.setTag.tags.push(this.tagvalue);
+        this.tags.push(this.tagvalue);
         this.tagvalue='';
       }
     }
@@ -104,7 +134,7 @@ export class SearchTagPage {
   }
 
   deleteItem(tag){
-    this.setTag.tags = this.setTag.tags.filter(function(item) { 
+    this.tags = this.tags.filter(function(item) { 
         return item !== tag
     })
   }
@@ -113,5 +143,19 @@ export class SearchTagPage {
   }
   closeModal(from){
       this.view.dismiss();
+  }
+
+  presentToast(msg) {
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 3000,
+      position: 'top'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
   }
 }
