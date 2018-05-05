@@ -12,7 +12,7 @@
   <ion-list>
     <ion-item>
       <ion-select  canceltext="Cancel" oktext="Ok" class="select-full" [(ngModel)]="tagtitleid" (ngModelChange)="getTagsByTagTitle($event)">
-        <ion-option value="" selected="true">-- Select Tag Title Name--</ion-option>
+        <ion-option value="0" selected="true">-- Select Tag Title Name--</ion-option>
         <ion-option *ngFor="let tagName of tagNameList" [value]= "tagName.id">{{ tagName.title }}</ion-option>
       </ion-select>
     </ion-item>
@@ -33,9 +33,4 @@
       </ion-buttons>
     </ion-item> 
   </ion-list>
-  <ion-fab right bottom>
-    <button ion-fab color="secondary" (click)="save()">
-      <ion-icon name="done-all"></ion-icon>
-    </button>
-  </ion-fab>
 </ion-content>

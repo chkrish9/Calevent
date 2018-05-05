@@ -52,19 +52,21 @@ export class SearchTagPage {
     });
   }
 
-  getTagsByTagTitle(){
-    this.selectedTags = this.tags.filter((tag)=>{
-      return tag.tagtitleid === this.tagtitleid;
+  getTagsByTagTitle(tagtitleid){
+   // this.presentToast(JSON.stringify(tagtitleid))
+    this.databasePro.getTagsByTagTitleId(tagtitleid).then(data => {
+      this.selectedTags = data;
     });
   }
   addTag(){
     if(this.tagvalue!=="" && this.tagvalue!=null){
       var value=this.tagvalue;
       var isExist=this.tags.filter(function(item) { 
-        return item.toLowerCase() === value.toLowerCase()
+        return item.tagname.toLowerCase() === value.toLowerCase()
       });
       if(isExist.length < 1){
-        this.tags.push(this.tagvalue);
+        this.databasePro.addTag(this.tagvalue,this.tagtitleid);
+        this.getTagsByTagTitle(this.tagtitleid);
         this.tagvalue='';
       }
     }
@@ -93,10 +95,11 @@ export class SearchTagPage {
           handler: data => {
             console.log(data);
             var isExist=this.tagNameList.filter(function(item) { 
-              return item.toLowerCase() === data.title.toLowerCase()
+              return item.title.toLowerCase() === data.title.toLowerCase()
             });
             if(isExist.length < 1){
-              this.tagNameList.push(data.title);
+              this.databasePro.addTagTitle(data.title, '');
+              this.loadTagTitles();
             }
           }
         }
@@ -111,8 +114,8 @@ export class SearchTagPage {
     this.tagNameList.forEach(element => {
       alert.addInput({
         type: 'checkbox',
-        label: element,
-        value: element,
+        label: element.title,
+        value: element.id,
         checked: false
       });
     });
@@ -123,20 +126,19 @@ export class SearchTagPage {
       handler: data => {
         console.log('Checkbox data:', data);
         data.forEach(element => {
-          this.tagNameList = this.tagNameList.filter(function(item) { 
-            return item !== element
-          })
+          this.databasePro.deleteTagTitle(element).catch(e => this.presentToast(JSON.stringify(e)));
         }); 
-        
+        this.loadTagTitles();
+        this.tagtitleid = 0;
+        this.selectedTags = [];
       }
     });
     alert.present();
   }
 
   deleteItem(tag){
-    this.tags = this.tags.filter(function(item) { 
-        return item !== tag
-    })
+    this.databasePro.deleteTag(tag.id).catch(e => this.presentToast(JSON.stringify(e)));
+    this.getTagsByTagTitle(this.tagtitleid);
   }
   save(){
     this.view.dismiss();

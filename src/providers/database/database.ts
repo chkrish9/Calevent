@@ -85,6 +85,53 @@ export class DatabaseProvider {
     return this.databaseReady.asObservable();
   }
 
+  getTagsByTagTitleId(titleId){
+    return this.database.executeSql("SELECT * FROM tags WHERE tagtitleid = "+titleId, []).then(data => {
+      let tags = [];
+
+      for (var i = 0; i < data.rows.length; i++) {
+        tags.push(data.rows.item(i))
+      }
+
+      return tags;
+    }, err => {
+      console.log("Error: ", err);
+      return [];
+    });
+  }
+
+  addTagTitle(title, imagename){
+    let data = [title, imagename];
+    this.presentToast(JSON.stringify(data));
+    return this.database.executeSql("INSERT INTO tagtitle (title, imagename) values (?,?)",data).then(res=>{
+      return res;
+    });
+  }
+
+  addTag(tagname, tagtitleid){
+    let data = [tagname, tagtitleid];
+    return this.database.executeSql("INSERT INTO tags (tagname, tagtitleid) values (?,?)",data).then(res=>{
+      return res;
+    });
+  }
+
+  deleteTagTitle(tagtitleid){
+    this.getTagsByTagTitleId(tagtitleid).then(data => {
+      data.forEach(tag => {
+        this.deleteTag(tag.id);
+      });
+    });
+    return this.database.executeSql("DELETE FROM tagtitle WHERE id = "+tagtitleid,[]).then(res=>{
+      return res;
+    });
+  }
+
+  deleteTag(tagid){
+    return this.database.executeSql("DELETE FROM tags WHERE id = "+tagid,[]).then(res=>{
+      return res;
+    });
+  }
+
   presentToast(msg) {
     let toast = this.toastCtrl.create({
       message: msg,
