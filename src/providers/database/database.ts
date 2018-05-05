@@ -14,7 +14,7 @@ export class DatabaseProvider {
 
   constructor(public http: Http, private sqliteProter: SQLitePorter,
     private storage: Storage, private sqlite: SQLite,
-    private platform: Platform,private toastCtrl: ToastController) {
+    private platform: Platform, private toastCtrl: ToastController) {
     this.databaseReady = new BehaviorSubject(false);
     this.platform.ready().then(() => {
       this.sqlite.create({
@@ -43,12 +43,30 @@ export class DatabaseProvider {
       .subscribe(sql => {
         this.sqliteProter.importSqlToDb(this.database, sql)
           .then(data => {
-           // this.presentToast(JSON.stringify(data));
+            // this.presentToast(JSON.stringify(data));
             this.databaseReady.next(true);
             this.storage.set('databse_filled', true);
           })
           .catch(e => console.log(e));
       })
+  }
+
+  getTagList() {
+    return this.getAllTagTitles().then(data => {
+      let tagList = [];
+      data.forEach(element => {
+        let tagObj = {
+          tagName: element.title,
+          image: element.imagename
+        }
+        this.getTagsByTagTitleId(element.id).then(tags => {
+          tagObj["tags"] =tags.map(a => a.tagname);;
+          tagList.push(tagObj);
+        });
+      });
+      return tagList;
+    });
+
   }
 
   getAllTagTitles() {
@@ -85,8 +103,8 @@ export class DatabaseProvider {
     return this.databaseReady.asObservable();
   }
 
-  getTagsByTagTitleId(titleId){
-    return this.database.executeSql("SELECT * FROM tags WHERE tagtitleid = "+titleId, []).then(data => {
+  getTagsByTagTitleId(titleId) {
+    return this.database.executeSql("SELECT * FROM tags WHERE tagtitleid = " + titleId, []).then(data => {
       let tags = [];
 
       for (var i = 0; i < data.rows.length; i++) {
@@ -100,34 +118,34 @@ export class DatabaseProvider {
     });
   }
 
-  addTagTitle(title, imagename){
+  addTagTitle(title, imagename) {
     let data = [title, imagename];
     this.presentToast(JSON.stringify(data));
-    return this.database.executeSql("INSERT INTO tagtitle (title, imagename) values (?,?)",data).then(res=>{
+    return this.database.executeSql("INSERT INTO tagtitle (title, imagename) values (?,?)", data).then(res => {
       return res;
     });
   }
 
-  addTag(tagname, tagtitleid){
+  addTag(tagname, tagtitleid) {
     let data = [tagname, tagtitleid];
-    return this.database.executeSql("INSERT INTO tags (tagname, tagtitleid) values (?,?)",data).then(res=>{
+    return this.database.executeSql("INSERT INTO tags (tagname, tagtitleid) values (?,?)", data).then(res => {
       return res;
     });
   }
 
-  deleteTagTitle(tagtitleid){
+  deleteTagTitle(tagtitleid) {
     this.getTagsByTagTitleId(tagtitleid).then(data => {
       data.forEach(tag => {
         this.deleteTag(tag.id);
       });
     });
-    return this.database.executeSql("DELETE FROM tagtitle WHERE id = "+tagtitleid,[]).then(res=>{
+    return this.database.executeSql("DELETE FROM tagtitle WHERE id = " + tagtitleid, []).then(res => {
       return res;
     });
   }
 
-  deleteTag(tagid){
-    return this.database.executeSql("DELETE FROM tags WHERE id = "+tagid,[]).then(res=>{
+  deleteTag(tagid) {
+    return this.database.executeSql("DELETE FROM tags WHERE id = " + tagid, []).then(res => {
       return res;
     });
   }

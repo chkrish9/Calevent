@@ -3,6 +3,7 @@ import { NavController, Platform, ToastController, ModalController, Modal } from
 import { Calendar } from '@ionic-native/calendar';
 import { PopoverController } from 'ionic-angular';
 import { PopoverComponent } from '../../components/popover/popover';
+import { DatabaseProvider } from '../../providers/database/database';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -12,30 +13,32 @@ export class HomePage {
   cal = {};
   calenderList = [];
   events = [];
-  tagsList = [
-    {
-      tagName: "Birthday",
-      tags: ["b'dy", "birthday"],
-      image:"assets/imgs/birthday.jpg"
-    },
-    {
-      tagName: "Marriage day",
-      tags: ["marriage", "anniversary"],
-      image:"assets/imgs/marriagean.jpg"
-    },
-    {
-      tagName: "Company",
-      tags: ["work", "developer", "join"],
-      image:"assets/imgs/company.jpg"
-    },
-    {
-      tagName: "Special",
-      tags: ["talk", "saw"],
-      image:"assets/imgs/special.jpg"
-    }
-  ];
+  // tagsList = [
+  //   {
+  //     tagName: "Birthday",
+  //     tags: ["b'dy", "birthday"],
+  //     image:"assets/imgs/birthday.jpg"
+  //   },
+  //   {
+  //     tagName: "Marriage day",
+  //     tags: ["marriage", "anniversary"],
+  //     image:"assets/imgs/marriagean.jpg"
+  //   },
+  //   {
+  //     tagName: "Company",
+  //     tags: ["work", "developer", "join"],
+  //     image:"assets/imgs/company.jpg"
+  //   },
+  //   {
+  //     tagName: "Special",
+  //     tags: ["talk", "saw"],
+  //     image:"assets/imgs/special.jpg"
+  //   }
+  // ];
+  tagsList = [];
   constructor(public navCtrl: NavController, private calender: Calendar, private platform: Platform,
-    private toastCtrl: ToastController, private modalCtrl: ModalController, private popoverCtrl: PopoverController) {
+    private toastCtrl: ToastController, private modalCtrl: ModalController, private popoverCtrl: PopoverController,
+    private databasepro: DatabaseProvider) {
     this.platform.ready().then(() => {
       this.calender.listCalendars().then(data => {
         const dummy = [];
@@ -46,6 +49,14 @@ export class HomePage {
           }
         });
       });
+     
+    });
+    this.databasepro.getDatabaseSate().subscribe( ready => {
+      if(ready){
+        this.databasepro.getTagList().then(data => {
+          this.tagsList = data;
+        });
+      }
     });
   }
 
