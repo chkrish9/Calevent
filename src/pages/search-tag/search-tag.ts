@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController, ToastController } from 'ionic-angular';
 import { DatabaseProvider } from '../../providers/database/database';
+import { ImagePicker } from '@ionic-native/image-picker';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 /**
  * Generated class for the SearchTagPage page.
@@ -25,9 +27,11 @@ export class SearchTagPage {
   tagNameList = [];
   tags = [];
   selectedTags = [];
+  path:string;
   constructor(public navCtrl: NavController, public navParams: NavParams,
      private view: ViewController, private alertCtrl: AlertController,
-     private databasePro:DatabaseProvider,private toastCtrl: ToastController) {
+     private databasePro:DatabaseProvider,private toastCtrl: ToastController,
+     private camera:Camera, private imagePicker:ImagePicker) {
     this.databasePro.getDatabaseSate().subscribe( ready => {
       if(ready){
           this.loadTagTitles();
@@ -145,6 +149,39 @@ export class SearchTagPage {
   }
   closeModal(from){
       this.view.dismiss();
+  }
+
+  takePhoto(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+    
+    this.camera.getPicture(options).then((url) => {
+     this.path = url;
+    }, (err) => {
+     // Handle error
+    });
+  }
+
+  chooseImage(){
+    const options = {
+      title: 'Select Picture',
+      message: 'Select atleat 1 image',
+      maximumImagesCount:1,
+      outType: 0,
+      quality:72,
+      height:396,
+      width:592
+    }
+    
+    this.imagePicker.getPictures(options).then((results) => {
+      for (var i = 0; i < results.length; i++) {
+        this.path = results[i];
+      }
+    }, (err) => { });
   }
 
   presentToast(msg) {
