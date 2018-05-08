@@ -18,7 +18,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 })
 export class SearchTagPage {
   tagvalue:string;
-  tagtitleid:number;
+  tagtitleid:string = "0";
+  activetab:string= "tagtitles";
   // setTag = {
   //   tagName:'',
   //   tags:[]
@@ -63,7 +64,7 @@ export class SearchTagPage {
     });
   }
   addTag(){
-    if(this.tagvalue!=="" && this.tagvalue!=null){
+    if(this.tagvalue!=="" && this.tagvalue!=null && this.tagtitleid !== "0" && this.tagtitleid !== ""){
       var value=this.tagvalue;
       var isExist=this.tags.filter(function(item) { 
         return item.tagname.toLowerCase() === value.toLowerCase()
@@ -72,6 +73,16 @@ export class SearchTagPage {
         this.databasePro.addTag(this.tagvalue,this.tagtitleid);
         this.getTagsByTagTitle(this.tagtitleid);
         this.tagvalue='';
+      }else{
+        this.presentToast("Tag already exits."); 
+      }
+    }
+    else
+    {
+      if(this.tagtitleid === "0"){
+        this.presentToast("Please select the tag title.");
+      }else{
+        this.presentToast("Please enter the tag.");
       }
     }
   }
@@ -133,7 +144,7 @@ export class SearchTagPage {
           this.databasePro.deleteTagTitle(element).catch(e => this.presentToast(JSON.stringify(e)));
         }); 
         this.loadTagTitles();
-        this.tagtitleid = 0;
+        this.tagtitleid = "0";
         this.selectedTags = [];
       }
     });
