@@ -28,7 +28,7 @@ export class SearchTagPage {
   tagNameList = [];
   tags = [];
   selectedTags = [];
-  path:string;
+  path:string= 'assets/imgs/dimg.png';
   constructor(public navCtrl: NavController, public navParams: NavParams,
      private view: ViewController, private alertCtrl: AlertController,
      private databasePro:DatabaseProvider,private toastCtrl: ToastController,

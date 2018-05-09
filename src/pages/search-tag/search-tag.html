@@ -32,6 +32,8 @@
       </ion-item>
       <button ion-button full (click)="addTagTitle()">Add Tag Title</button>
       <button ion-button full (click)="deleteTagTitle()" color="danger">Delete Tag Title</button>
+      <button ion-button full (click)="chooseImage()" color="secondary">Choose Tag Title image</button>
+      <img [src]=path style="height: 15em;width: 100%;"/>
     </ion-list>
     <ion-list *ngSwitchCase="'tags'">
       <ion-item class="add-input">
