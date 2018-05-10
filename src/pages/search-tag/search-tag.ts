@@ -172,6 +172,7 @@ export class SearchTagPage {
     
     this.camera.getPicture(options).then((url) => {
      this.path = url;
+     this.databasePro.updateImage(url, this.tagtitleid)
     }, (err) => {
      // Handle error
     });
@@ -192,6 +193,7 @@ export class SearchTagPage {
       for (var i = 0; i < results.length; i++) {
         this.path = results[i];
       }
+      this.databasePro.updateImage(this.path, this.tagtitleid)
     }, (err) => { });
   }
 
