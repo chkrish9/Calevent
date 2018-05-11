@@ -62,6 +62,10 @@ export class SearchTagPage {
     this.databasePro.getTagsByTagTitleId(tagtitleid).then(data => {
       this.selectedTags = data;
     });
+    var tagtitleObj = this.tagNameList.filter(item => {
+            return item.id === tagtitleid;
+    });
+    this.path = (tagtitleObj[0]["imagename"]==="") ? 'assets/imgs/dimg.png':tagtitleObj[0]["imagename"];
   }
   addTag(){
     if(this.tagvalue!=="" && this.tagvalue!=null && this.tagtitleid !== "0" && this.tagtitleid !== ""){
