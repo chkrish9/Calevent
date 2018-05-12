@@ -151,9 +151,14 @@ export class HomePage {
   }
 
   filterEvents() {
+    var model: Modal = this.modalCtrl.create('FilterCalPage');
+    model.present();
+    model.onDidDismiss(data => {
+      //this.calender.findEventWithOptions(title, location, notes, startDate, endDate, options)
+      this.listEvent();
+    });
     this.presentToast(JSON.stringify("Filter event"));
-    //this.calender.findEventWithOptions(title, location, notes, startDate, endDate, options)
-    this.listEvent();
+    
   }
 
   presentPopover(ev) {
