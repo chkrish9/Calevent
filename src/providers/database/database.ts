@@ -134,7 +134,6 @@ export class DatabaseProvider {
   }
 
   updateImage(imagename, id) {
-    let data = [imagename, id];
     return this.database.executeSql("UPDATE tagtitle SET imagename ="+ imagename +"WHERE id ="+id, []).then(res => {
       return res;
     });

@@ -13,6 +13,7 @@
 
 <ion-content padding>
   <ion-label>Choose calendar</ion-label>
+  <button ion-button full><ion-icon ios="ios-funnel" md="md-funnel"></ion-icon></button>
   <ion-select canceltext="Cancel" oktext="Ok" class="select-full" [(ngModel)]="selectedCal" (ngModelChange)="listEvent($event)">
     <ion-option value="" selected="true">-- Select --</ion-option>
     <ion-option *ngFor="let cal of calenderList" [value]="cal.name">{{ cal.name }}</ion-option>
