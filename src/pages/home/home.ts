@@ -79,7 +79,6 @@ export class HomePage {
           this.addEventType(obj);
           return obj.calendar_id == this.cal["id"];
         });
-
       });
     }
   }
@@ -154,10 +153,9 @@ export class HomePage {
     var model: Modal = this.modalCtrl.create('FilterCalPage');
     model.present();
     model.onDidDismiss(data => {
-      //this.calender.findEventWithOptions(title, location, notes, startDate, endDate, options)
-      this.listEvent();
+      
     });
-    this.presentToast(JSON.stringify("Filter event"));
+    //this.presentToast(JSON.stringify("Filter event"));
     
   }
 

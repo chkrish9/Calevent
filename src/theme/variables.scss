@@ -93,3 +93,11 @@ $colors: (
 .padding-5px{
   padding: 5px;
 }
+ion-item {
+  background: none;
+  padding: 0 !important;
+}
+.select-full{
+  max-width: 100%;
+  padding: 0;
+}

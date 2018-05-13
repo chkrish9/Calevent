@@ -7,7 +7,10 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
   templateUrl: 'filter-cal.html',
 })
 export class FilterCalPage {
-
+  event = {
+    title:'',
+    location:''
+  }
   constructor(public navCtrl: NavController, public navParams: NavParams,private view: ViewController) {
   }
 
@@ -16,6 +19,10 @@ export class FilterCalPage {
   }
   closeModal(from){
     this.view.dismiss();
+  }
+
+  filter(){
+    this.view.dismiss(this.event);
   }
 
 }
