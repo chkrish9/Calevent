@@ -153,16 +153,12 @@ export class HomePage {
     var model: Modal = this.modalCtrl.create('FilterCalPage');
     model.present();
     model.onDidDismiss(data => {
-      
+      //this.presentToast(JSON.stringify("Filter event"));
     });
-    //this.presentToast(JSON.stringify("Filter event"));
-    
   }
 
   presentPopover(ev) {
-
     let popover = this.popoverCtrl.create(PopoverComponent);
-
     popover.present({
       ev: ev
     });
