@@ -153,7 +153,9 @@ export class HomePage {
     var model: Modal = this.modalCtrl.create('FilterCalPage');
     model.present();
     model.onDidDismiss(data => {
-      //this.presentToast(JSON.stringify("Filter event"));
+      this.events = this.events.filter(ev => {
+        return (ev.title.indexOf(data.title) > -1);
+      });
     });
   }
 
