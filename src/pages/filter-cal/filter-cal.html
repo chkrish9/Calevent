@@ -21,6 +21,18 @@
     <ion-item>
       <ion-input placeholder="Location" [(ngModel)]="event.location"></ion-input>
     </ion-item>
+    <ion-item>
+      <ion-label>Start Date</ion-label>
+      <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.startDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>End Date</ion-label>
+      <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="event.endDate"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>In year</ion-label>
+      <ion-datetime displayFormat="YYYY" [(ngModel)]="event.inyear"></ion-datetime>
+    </ion-item>
   </ion-list>
   <button ion-button full (click)="filter()">Filter</button>
 </ion-content>

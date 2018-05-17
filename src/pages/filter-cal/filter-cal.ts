@@ -9,7 +9,10 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 export class FilterCalPage {
   event = {
     title:'',
-    location:''
+    location:'',
+    startDate:null,
+    endDate:null,
+    inyear:null
   }
   constructor(public navCtrl: NavController, public navParams: NavParams,private view: ViewController) {
   }
