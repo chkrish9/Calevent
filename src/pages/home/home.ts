@@ -49,10 +49,10 @@ export class HomePage {
           }
         });
       });
-     
+
     });
-    this.databasepro.getDatabaseSate().subscribe( ready => {
-      if(ready){
+    this.databasepro.getDatabaseSate().subscribe(ready => {
+      if (ready) {
         this.databasepro.getTagList().then(data => {
           this.tagsList = data;
         });
@@ -64,29 +64,24 @@ export class HomePage {
     this.cal = this.calenderList.filter((obj) => {
       return obj.name == this.selectedCal;
     })[0];
-
-    if (this.platform.is('ios')) {
-      this.calender.findAllEventsInNamedCalendar(this.selectedCal).then(data => {
-        this.events = data;
-      });
-    } else if (this.platform.is('android')) {
-      let start = new Date();
-      let end = new Date();
-      start.setDate(start.getDate() - 1);
-      end.setDate(end.getDate() + 366);
-      this.calender.listEventsInRange(start, end).then(data => {
-        this.events = data.filter((obj) => {
-          this.addEventType(obj);
-          return obj.calendar_id == this.cal["id"];
-        });
-      });
-    }
+    let start = new Date();
+    let end = new Date();
+    start.setDate(start.getDate() - 1);
+    end.setDate(end.getDate() + 366);
+    this.setEvents(start, end);
   }
-
+  setEvents(startDate, endDate) {
+    this.calender.listEventsInRange(startDate, endDate).then(data => {
+      this.events = data.filter((obj) => {
+        this.addEventType(obj);
+        return obj.calendar_id == this.cal["id"];
+      });
+    });
+  }
   addEventType(obj) {
     this.tagsList.forEach(tagObj => {
-      var istrue=this.checkEventType(obj, tagObj);
-      if(istrue){
+      var istrue = this.checkEventType(obj, tagObj);
+      if (istrue) {
         return;
       }
     });
