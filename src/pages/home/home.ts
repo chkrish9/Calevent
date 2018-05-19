@@ -151,6 +151,7 @@ export class HomePage {
       this.events = this.events.filter(ev => {
         return (ev.title.indexOf(data.title) > -1);
       });
+      //this.setEvents(start, end);
     });
   }
 
