@@ -86,3 +86,18 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+.card-size{
+  height: 16em;
+  width: 100%;
+}
+.padding-5px{
+  padding: 5px;
+}
+ion-item {
+  background: none;
+  padding: 0 !important;
+}
+.select-full{
+  max-width: 100%;
+  padding: 0;
+}

@@ -3,18 +3,28 @@
     <ion-title>
       <ion-icon name="calendar" class="header-icon"></ion-icon> CalEvent
     </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-label>Choose calendar</ion-label>
-  <ion-select canceltext="Cancel" oktext="Ok" class="select-full" [(ngModel)]="selectedCal" (ngModelChange)="listEvent($event)">
-    <ion-option value="" selected="true">-- Select --</ion-option>
-    <ion-option *ngFor="let cal of calenderList" [value]="cal.name">{{ cal.name }}</ion-option>
-  </ion-select>
+  <ion-item>
+    <ion-select canceltext="Cancel" oktext="Ok" class="select-full" [(ngModel)]="selectedCal" (ngModelChange)="listEvent($event)">
+      <ion-option value="" selected="true">-- Select calendar--</ion-option>
+      <ion-option *ngFor="let cal of calenderList" [value]="cal.name">{{ cal.name }}</ion-option>
+    </ion-select>
+  </ion-item>
+  <button ion-button full (click)="filterEvents()">
+    Filter <ion-icon ios="ios-funnel" md="md-funnel" class="padding-5px"></ion-icon>
+  </button>
   <ion-list *ngIf="selectedCal" class="card-background-page">
     <ion-card *ngFor="let ev of events" class="zero-margin-left-right width-100-per">
-      <img src="assets/imgs/birthday.jpg" />
+      <img [src]='ev.image' *ngIf="(ev.image != undefined)" class="card-size" />
+      <img src='assets/imgs/default.jpg' *ngIf="(ev.image == undefined)" class="card-size" />
       <div class="card-title">{{ ev.title }}</div>
       <div class="card-subtitle">{{ parseDate(ev.dtstart) }}</div>
     </ion-card>

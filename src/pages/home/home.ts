@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, Platform, ToastController, ModalController, Modal } from 'ionic-angular';
 import { Calendar } from '@ionic-native/calendar';
-
+import { PopoverController } from 'ionic-angular';
+import { PopoverComponent } from '../../components/popover/popover';
+import { DatabaseProvider } from '../../providers/database/database';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -11,11 +13,50 @@ export class HomePage {
   cal = {};
   calenderList = [];
   events = [];
-  constructor(public navCtrl: NavController, private calender: Calendar, private platform: Platform, private toastCtrl: ToastController, private modalCtrl: ModalController) {
+  // tagsList = [
+  //   {
+  //     tagName: "Birthday",
+  //     tags: ["b'dy", "birthday"],
+  //     image:"assets/imgs/birthday.jpg"
+  //   },
+  //   {
+  //     tagName: "Marriage day",
+  //     tags: ["marriage", "anniversary"],
+  //     image:"assets/imgs/marriagean.jpg"
+  //   },
+  //   {
+  //     tagName: "Company",
+  //     tags: ["work", "developer", "join"],
+  //     image:"assets/imgs/company.jpg"
+  //   },
+  //   {
+  //     tagName: "Special",
+  //     tags: ["talk", "saw"],
+  //     image:"assets/imgs/special.jpg"
+  //   }
+  // ];
+  tagsList = [];
+  constructor(public navCtrl: NavController, private calender: Calendar, private platform: Platform,
+    private toastCtrl: ToastController, private modalCtrl: ModalController, private popoverCtrl: PopoverController,
+    private databasepro: DatabaseProvider) {
     this.platform.ready().then(() => {
       this.calender.listCalendars().then(data => {
-        this.calenderList = data;
+        const dummy = [];
+        data.forEach(element => {
+          if (dummy.indexOf(element.name) < 0) {
+            dummy.push(element.name);
+            this.calenderList.push(element);
+          }
+        });
       });
+
+    });
+    this.databasepro.getDatabaseSate().subscribe(ready => {
+      if (ready) {
+        this.databasepro.getTagList().then(data => {
+          this.tagsList = data;
+        });
+      }
     });
   }
 
@@ -23,22 +64,43 @@ export class HomePage {
     this.cal = this.calenderList.filter((obj) => {
       return obj.name == this.selectedCal;
     })[0];
+    let start = new Date();
+    let end = new Date();
+    start.setDate(start.getDate() - 1);
+    end.setDate(end.getDate() + 366);
+    this.setEvents(start, end);
+  }
+  setEvents(startDate, endDate) {
+    this.calender.listEventsInRange(startDate, endDate).then(data => {
+      this.events = data.filter((obj) => {
+        this.addEventType(obj);
+        return obj.calendar_id == this.cal["id"];
+      });
+    });
+  }
+  addEventType(obj) {
+    this.tagsList.forEach(tagObj => {
+      var istrue = this.checkEventType(obj, tagObj);
+      if (istrue) {
+        return;
+      }
+    });
+  }
 
-    if (this.platform.is('ios')) {
-      this.calender.findAllEventsInNamedCalendar(this.selectedCal).then(data => {
-        this.events = data;
-      });
-    } else if (this.platform.is('android')) {
-      let start = new Date();
-      let end = new Date();
-      start.setDate(start.getDate() - 1);
-      end.setDate(end.getDate() + 366);
-      this.calender.listEventsInRange(start, end).then(data => {
-        this.events = data.filter((obj) => {
-          return obj.calendar_id == this.cal["id"];
-        });;
-      });
-    }
+  checkEventType(obj, tagObj) {
+    const tagName = tagObj.tagName;
+    var tags = tagObj.tags;
+    var image = tagObj.image;
+    var istrue = false;
+    tags.forEach(tag => {
+      if (obj.title.toLowerCase().indexOf(tag.toLowerCase()) > -1) {
+        obj["eventtype"] = tagName;
+        obj["image"] = image;
+        istrue = true;
+        return true;
+      }
+    });
+    return istrue;
   }
 
   createEvent() {
@@ -83,9 +145,21 @@ export class HomePage {
   }
 
   filterEvents() {
-    this.presentToast(JSON.stringify("Filter event"));
-    //this.calender.findEventWithOptions(title, location, notes, startDate, endDate, options)
-    this.listEvent();
+    var model: Modal = this.modalCtrl.create('FilterCalPage');
+    model.present();
+    model.onDidDismiss(data => {
+      this.events = this.events.filter(ev => {
+        return (ev.title.indexOf(data.title) > -1);
+      });
+      //this.setEvents(start, end);
+    });
+  }
+
+  presentPopover(ev) {
+    let popover = this.popoverCtrl.create(PopoverComponent);
+    popover.present({
+      ev: ev
+    });
   }
 
   deleteEvent(ev) {
